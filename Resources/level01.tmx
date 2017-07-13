@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="300" height="15" tilewidth="16" tileheight="16" nextobjectid="51">
+ <tileset firstgid="1" name="dituaaa" tilewidth="16" tileheight="16" tilecount="7" columns="7">
+  <image source="dituaaa.png" width="112" height="21"/>
+  <tile id="0">
+   <properties>
+    <property name="Kill" type="int" value="0"/>
+    <property name="isBlock" type="int" value="0"/>
+    <property name="isWin" type="int" value="1"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="Kill" type="int" value="1"/>
+    <property name="isBlock" type="int" value="0"/>
+    <property name="isWin" type="int" value="0"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="Kill" type="int" value="0"/>
+    <property name="isBlock" type="int" value="1"/>
+    <property name="isWin" type="int" value="0"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="8" name="bg" tilewidth="16" tileheight="16" tilecount="6325" columns="115">
+  <image source="bg.png" width="1854" height="893"/>
+ </tileset>
+ <tileset firstgid="6333" name="block" tilewidth="16" tileheight="16" tilecount="1" columns="1">
+  <image source="block.png" width="16" height="16"/>
+  <tile id="0" type="block">
+   <properties>
+    <property name="isBlock" type="int" value="1"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="bg" width="300" height="15">
+  <data encoding="base64" compression="zlib">
+   eJztwzEJAAAMA7A+c1z/VMcggfSSqqqqqqqqqqqqqqqqqqqqqqr6/gBdy09t
+  </data>
+ </layer>
+ <layer name="block" width="300" height="15">
+  <data encoding="base64" compression="zlib">
+   eJzt2UEKgzAQBVDdxPvfuHQhFGlxNJlE7XswaKFOgrbfiNMEAAAAAABAT8voCQDsWDbbmj7ZBXfztN9v+aietjlVcz6fci2gRjSb7pZhI9cSv3Lq7Jh3OefQ0tUyJzqPo/PN6hvt1zKvrnKtIMPI556s4470z8q2SI+WeSWnuIJolkRz5/2dyLNPSajVmf/WOu+I7PVSzXHlxLZ8+bzd39PyvtT7/vbv5kHj9nhfo5R6Vs2DxgUAoK0XXY0MIg==
+  </data>
+ </layer>
+ <layer name="ground" width="300" height="15">
+  <data encoding="base64" compression="zlib">
+   eJzt1+EKgjAUBtBWkO//xtUPQaTh1Tm3yTlwmZHexmYf+ngAAAAtPb/1aj0JgMa2sjCSlfKUkbl/+1WaT/YWyJlaTwBgw7QaS/rULhjN3e7ftKgrrXOqZD3vshdQIppNo2VYy2eJXE4d/c1R1hzO1FvmROexd761+kb7nZlXvewV1NDyvafWdXv618q2SI8z80pO0YNolkRz53dO5N0nVajZkf/WPO+I2s9LJdelA2P683l9nJMW4/o4913kfK7Tar3fSik1SAEAcK4PeL8KRQ==
+  </data>
+ </layer>
+ <objectgroup name="objects">
+  <object id="37" name="BirthPoint" x="41" y="41"/>
+  <object id="46" name="Enemy" x="1149" y="159"/>
+  <object id="48" name="Cloud" type="Cloud" x="2785" y="81"/>
+  <object id="50" x="842" y="-43"/>
+ </objectgroup>
+</map>

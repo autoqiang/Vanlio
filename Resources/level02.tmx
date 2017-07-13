@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="16" tileheight="16" nextobjectid="15">
+ <tileset firstgid="1" name="tukuai" tilewidth="16" tileheight="16" tilecount="420" columns="35">
+  <image source="20160125102806795.png" width="560" height="192"/>
+ </tileset>
+ <layer name="ground" width="100" height="25">
+  <data encoding="base64" compression="zlib">
+   eJzt0UEKgCAQBVAvU16muv9xmk270hamQu/Bhw/KCGNKAAAAAAAAAADwbImskVzpLXI3783bvfsXs2t7vO6NsEX2yFHopbOe/Q9m2POsf3ECJ8ooUg==
+  </data>
+ </layer>
+ <objectgroup name="objects">
+  <object id="14" name="PlayerPoint" x="0" y="301" width="57" height="48"/>
+ </objectgroup>
+</map>
