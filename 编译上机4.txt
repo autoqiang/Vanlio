@@ -1,0 +1,308 @@
+#include<iostream>
+#include<cstring>
+#include<map>
+#include<stack>
+using namespace std;
+struct node{
+    char fir;
+    string s;
+    node *next;
+    node(){next=0;
+    }
+};
+node *str[27];
+char ans[28];
+int tot=0;
+
+char folans[28][28];
+int foltot=0;
+char START=' ';
+
+map<char,int> upSymChart;
+map<char,int> lowSymChart;
+int uptot=0;
+int lowtot=0;
+
+string table[200][200];
+
+void signSym(string a){//◊¢≤·∑«÷’Ω·∫Õ÷’Ω·∑˚∫≈
+    if(upSymChart.count(a[0])==0)
+        upSymChart[a[0]]=uptot++;
+    if(lowSymChart.count('$')==0)
+        lowSymChart['$']=lowtot++;
+    //    cout<<upSymChart[a[0]];
+    for(int i=3;i<a.length();i++){
+        if(a[i]=='|')continue;
+        if(a[i]>='A'&&a[i]<='Z'){
+            if(upSymChart.count(a[i])==0)
+                upSymChart[a[i]]=uptot++;
+        }else{
+            if(lowSymChart.count(a[i])==0)
+                lowSymChart[a[i]]=lowtot++;
+        }
+    }
+}
+
+bool first(char f,node* bing,int deep){//deepµ›πÈ≤„ ˝,0Ω®±Ì
+    bool flag=false;
+    int jiao=0;
+    while(bing!=0){
+        string tmp=bing->s;
+        if(tmp=="@")return false;
+        if(!(tmp[jiao]>='A'&&tmp[jiao]<='Z')){
+            bool exist=false;
+            for(int i=0;i<tot;i++){
+                if(ans[i]==tmp[jiao]){
+                    exist=true;break;
+                }
+            }
+            if(!exist){
+                ans[tot++]=tmp[jiao];
+                int row=upSymChart[f];
+                int col=lowSymChart[tmp[jiao]];
+                table[row][col]=tmp;//Ω®¡¢∑÷Œˆ±Ì
+            }
+            bing=bing->next;
+            continue;
+        }else{
+            flag=first(tmp[jiao],str[tmp[jiao]-'A'],deep+1);
+            if(!flag){
+                jiao++;
+                if(jiao>=tmp.size())return false;
+            }
+            else {
+                if(deep==0){
+                    for(int i=0;i<tot;i++){
+                        int row=upSymChart[f];
+                        int col=lowSymChart[ans[i]];
+                        table[row][col]=tmp;//Ω®¡¢∑÷Œˆ±Ì
+                    }
+                }
+                bing=bing->next;
+            }
+        }
+    }
+    return true;
+    
+}
+void follow(char f){
+    static bool vis[27]={false};
+    vis[f-'A']=true;
+    for(int k=0;k<27;k++){
+        node *tmp=str[k];
+        while(tmp!=0){
+            int w=(tmp->s).find(f);
+            if(w!=-1){
+                if(w+1>=tmp->s.size()){
+                    if(!vis[tmp->fir-'A'])follow(tmp->fir);//¶≈
+                    foltot=strlen(folans[f-'A']);
+                    tot=strlen(folans[tmp->fir-'A']);
+                    for(int j=0;j<tot;j++){
+                        bool exist=false;
+                        for(int i=0;i<foltot;i++){
+                            if(folans[tmp->fir-'A'][j]==folans[f-'A'][i]){
+                                exist=true;break;
+                            }
+                        }
+                        
+                        if(!exist){
+                            folans[f-'A'][foltot++]=folans[tmp->fir-'A'][j];
+                            //                            table[upSymChart[f]][lowSymChart[folans[tmp->fir-'A'][j]]]=tmp->s;//Ω®¡¢∑÷Œˆ±Ì
+                        }
+                    }
+                    tot=0;
+                    //                    vis[tmp->fir]=false;
+                }else{
+                    char t=tmp->s[w+1];
+                    if(!(t>='A'&&t<='Z')){//÷’Ω·∑˚
+                        foltot=strlen(folans[f-'A']);
+                        bool exist=false;
+                        for(int i=0;i<foltot;i++){
+                            if(t==folans[f-'A'][i]){
+                                exist=true;break;
+                            }
+                        }
+                        if(!exist){
+                            folans[f-'A'][foltot++]=t;
+                            //                            table[upSymChart[f]][lowSymChart[t]]=tmp->s;//Ω®¡¢∑÷Œˆ±Ì
+                        }
+                        
+                    }else{//∑«÷’Ω·∑˚
+                        bool flag=first(t,str[t-'A'],1);// π”√÷Æ∫ÛµƒfirstºØ∫œ
+                        foltot=strlen(folans[f-'A']);
+                        for(int j=0;j<tot;j++){
+                            bool exist=false;
+                            for(int i=0;i<foltot;i++){// «∑Ò“—¥Ê‘⁄
+                                if(ans[j]==folans[f-'A'][i]){
+                                    exist=true;break;
+                                }
+                            }
+                            if(!exist){
+                                folans[f-'A'][foltot++]=ans[j];//≤ª¥Ê‘⁄,º”»ÎfollowºØ∫œ
+                                //                                table[upSymChart[f]][lowSymChart[ans[j]]]=tmp->s;//Ω®¡¢∑÷Œˆ±Ì
+                            }
+                        }
+                        tot=0;//«Âø’firstºØ∫œ
+                        if(!flag){
+                            if(!vis[tmp->fir-'A'])follow(tmp->fir);//firstºØ∫œ÷–”–¶≈,Ω´follow£®fir£©º”»Î
+                            foltot=strlen(folans[f-'A']);
+                            tot=strlen(folans[tmp->fir-'A']);
+                            for(int j=0;j<tot;j++){
+                                bool exist=false;
+                                for(int i=0;i<foltot;i++){
+                                    if(folans[tmp->fir-'A'][j]==folans[f-'A'][i]){
+                                        exist=true;break;
+                                    }
+                                }
+                                if(!exist){
+                                    folans[f-'A'][foltot++]=folans[tmp->fir-'A'][j];
+                                    //                                    table[upSymChart[f]][lowSymChart[folans[tmp->fir-'A'][j]]]=tmp->s;//Ω®¡¢∑÷Œˆ±Ì
+                                }
+                            }
+                            tot=0;
+                            //                            vis[tmp->fir]=false;
+                        }
+                    }
+                }
+            }
+            tmp=tmp->next;
+        }
+        
+    }
+    return ;
+}
+void createTable(){
+    map<char,int>::iterator i;
+    for(i=upSymChart.begin();i!=upSymChart.end();i++){
+        char f;
+        f=i->first;
+        node *tmp=str[f-'A'];
+        
+        bool flag=first(f,str[f-'A'],0);
+        if(!flag){
+            follow(f);
+            for(int j=0;j<foltot;j++){
+                table[upSymChart[f]][lowSymChart[folans[f-'A'][j]]]='@';
+            }
+        }else{
+            follow(f);
+            for(int j=0;j<foltot;j++){
+                if(table[upSymChart[f]][lowSymChart[folans[f-'A'][j]]]=="")
+                    table[upSymChart[f]][lowSymChart[folans[f-'A'][j]]]="synch";
+            }
+        }
+        tot=0;
+    }
+}
+
+void showTable(){
+    for(map<char,int>::iterator it=lowSymChart.begin();it!=lowSymChart.end();it++){
+        cout<<it->first<<" "<<it->second<<endl;
+    }
+    for(map<char,int>::iterator it=upSymChart.begin();it!=upSymChart.end();it++){
+        cout<<it->first<<" "<<it->second<<endl;
+    }
+    cout<<" ";
+    for(int i=0;i<lowtot;i++){
+        cout<<i<<"\t";
+    }
+    cout<<endl;
+    for(int i=0;i<uptot;i++){
+        cout<<i<<" ";
+        for(int j=0;j<lowtot;j++){
+            cout<<table[i][j]<<"\t";
+        }
+        cout<<endl;
+    }
+}
+
+void exec(string a){
+    int w=0;
+    stack<char> sta;
+    sta.push('$');
+    sta.push(START);
+    while(!sta.empty()&&w<a.length()){
+        if(sta.top()>='A' && sta.top()<='Z'){
+            string tmp=table[upSymChart[sta.top()]][lowSymChart[a[w]]];
+            if(tmp==""){
+                cout<<"输入串跳过符号"<<a[w]<<"，用户多输入了一个"<<a[w]<<endl;
+                w++;
+            }else if(tmp=="synch"){
+                cout<<"弹出非终结符"<<sta.top()<<"，用户少输入了标识符"<<endl;
+                sta.pop();
+            }else{
+                if(tmp!="@"){
+                    cout<<sta.top();
+                    cout<<"->"<<tmp<<endl;
+                }
+                sta.pop();
+                for(int i=tmp.length()-1;i>=0;i--){
+                    if(tmp[i]=='@')continue;
+                    sta.push(tmp[i]);
+                }
+            }
+        }else{
+            if(sta.top()!=a[w]){
+//                cout<<"未知标识符"<<sta.top()<<endl;
+                cout<<"标识符错误"<<endl ;
+                sta.pop();
+            }else{
+                sta.pop();
+                w++;
+            }
+        }
+    }
+}
+
+int main(){
+    string a;
+    memset(str,0,sizeof(str));
+    while(true){
+        cin>>a;
+        if(a=="$")break;
+        
+        signSym(a);
+        
+        char f=a[0];
+        if(START==' ')START=f;
+        int w=a.find('|');
+        str[f-'A']=new node();
+        if(w==-1){
+            str[f-'A']->s=a.substr(3,a.size()-3);
+            str[f-'A']->fir=f;
+            a="";
+        }
+        else{
+            str[f-'A']->s=a.substr(3,w-3);
+            str[f-'A']->fir=f;
+            a.erase(0,w+1);
+        }
+        w=a.find('|');
+        node *tail=str[f-'A'];
+        while(w!=-1){
+            tail->next=new node();
+            tail=tail->next;
+            tail->s=a.substr(0,w);
+            tail->fir=f;
+            a.erase(0,w+1);
+            w=a.find('|');
+        }
+        if(a!=""){
+            tail->next=new node();
+            tail=tail->next;
+            tail->s=a;
+            tail->fir=f;
+        }
+    }
+    memset(ans,0,sizeof(ans));
+    memset(folans,0,sizeof(folans));
+    folans[START-'A'][0]='$';
+    createTable();
+    
+    //    showTable();
+    string s;
+    cin>>s;
+    s[s.length()-1]='$';
+    exec(s);
+}
+
